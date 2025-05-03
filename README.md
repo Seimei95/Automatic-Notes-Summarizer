@@ -29,6 +29,18 @@
 3. Output will appear in the terminal or summary.txt /output.
 ---
 
+# Contributing
+
+We welcome contributions from the community! If you have ideas or suggestions, please open an issue or submit a pull request.
+
+### How to Contribute 
+1. Fork the repository.
+2. Create your feature branch (`git checkout -b feature/your-feature`).
+3. Commit your changes (`git commit -m 'Add your feature'`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a pull request.
+---
+
 # License
 
 This project is licensed under a **Custom All Rights Reserved License**.  
