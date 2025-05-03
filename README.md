@@ -1,8 +1,5 @@
 # Automatic-Notes-Summarizer
 
-A Python-based tool that automatically summarizes large amounts of text from PDFs, slides, or documents into concise and meaningful notes. 
-Ideal for individuals looking to save time.
----
 # Technology Stack
 
 - **Language:** Python 3.8+
