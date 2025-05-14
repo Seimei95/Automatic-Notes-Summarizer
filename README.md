@@ -5,7 +5,7 @@
 - **Language:** Python 3.8+
 - **Libraries:** PyMuPDF, NLTK or spaCy, sumy
 - **Functionality:** Extract text, clean it, and generate extractive summaries
-- **Interface:** Simple UI
+- **Interface:** CLI (Command Line Interface)
 ---
 
 # Installation and Setup
