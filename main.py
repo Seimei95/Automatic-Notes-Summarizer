@@ -19,13 +19,46 @@ def get_metadata(file_path):
         metadata = pdf.metadata
         for key, value in metadata.items():
             print(f"{key}: {value}")
+        print("\n")
     except Exception as e:
         print(f"Error opening PDF file: {e}")
-    exit()
 
-number_input  = input("To extract metadata from a PDF file, choose 1 \n")
-if number_input == "1":
-    get_metadata(file_path)
-else:
-    print("Invalid input. Please select a valid option.")
-    exit()
+def get_total_page_number(file_path):
+    try:
+        pdf =  fitz.open(file_path)
+        page_count = pdf.page_count
+        print(f"Number of pages in the PDF: {page_count}\n")
+    except Exception as e:
+        print(f"error in opening file{e}")
+
+def get_page_summary(file_path):
+    try:
+        pdf = fitz.open(file_path)
+        num = int(input("Enter the page number you want to summarize: "))
+        if num <1 or num > pdf.page_count:
+            print(f"page number {num} is out of range. This PDF has only {pdf.page_count} pages.")
+            return
+        page_content = pdf.load_page(num-1).get_text()
+        print(f"The content of page {num} is: \n")
+        print(page_content)
+        print("\n") 
+    except Exception as e:
+        print(f"Error opening PDF file: {e}")
+    except ValueError as e:
+        print(f"Our experts suggest {e} isn't a valid page number. Please try again.")
+
+while True:
+    number_input  = input("To extract metadata from a PDF file, choose 1 \nTo find total page numbers from a PDF file, choose 2 \nTo summarize an individual page from PDF, choose 3 \nTo exit the program, choose q \n")
+    if number_input == "1":
+        get_metadata(file_path)
+    elif number_input == "2":
+        get_total_page_number(file_path)
+    elif number_input == "3":
+        get_page_summary(file_path)
+    elif number_input.lower() == "q":
+        print("See you on the next PDF file!")
+        break
+    else:
+        print("Invalid input. Please select a valid option.")
+
+    
