@@ -47,14 +47,29 @@ def get_page_summary(file_path):
     except ValueError as e:
         print(f"Our experts suggest {e} isn't a valid page number. Please try again.")
 
+def get_pdf_content(file_path):
+    try:
+        pdf = fitz.open(file_path)
+        number_pages = pdf.page_count
+        pdf_content = []
+        for page in range(0, number_pages):
+            pdf_content.append(pdf.load_page(page).get_text())
+            page = page + 1
+            print(pdf_content)
+        return pdf_content
+    except Exception as e:
+        print(f"Error opening PDF file: {e}")
+
 while True:
-    number_input  = input("To extract metadata from a PDF file, choose 1 \nTo find total page numbers from a PDF file, choose 2 \nTo summarize an individual page from PDF, choose 3 \nTo exit the program, choose q \n")
+    number_input  = input("To extract metadata from a PDF file, choose 1 \nTo find total page numbers from a PDF file, choose 2 \nTo summarize an individual page from PDF, choose 3 \nTo summarize whole PDF, choose 4 \nTo exit the program, choose q \n")
     if number_input == "1":
         get_metadata(file_path)
     elif number_input == "2":
         get_total_page_number(file_path)
     elif number_input == "3":
         get_page_summary(file_path)
+    elif number_input == "4":
+        get_pdf_content(file_path)
     elif number_input.lower() == "q":
         print("See you on the next PDF file!")
         break
