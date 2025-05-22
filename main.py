@@ -1,5 +1,6 @@
 import tkinter as tk
 import fitz
+#from sys import ps1
 from tkinter import filedialog
 
 print("Welcome to Automatic Notes summarizer \n")
@@ -52,11 +53,11 @@ def get_pdf_content(file_path):
         pdf = fitz.open(file_path)
         number_pages = pdf.page_count
         pdf_content = []
-        for page in range(0, number_pages):
-            pdf_content.append(pdf.load_page(page).get_text())
-            page = page + 1
+        for i in range(0, number_pages):
+            page_content = pdf.load_page(i).get_text()
+            page_content = page_content.replace("\n", "  ")
+            pdf_content.append(page_content)
             print(pdf_content)
-        return pdf_content
     except Exception as e:
         print(f"Error opening PDF file: {e}")
 
