@@ -39,10 +39,15 @@ def get_page_summary(file_path):
         if num <1 or num > pdf.page_count:
             print(f"page number {num} is out of range. This PDF has only {pdf.page_count} pages.")
             return
-        page_content = pdf.load_page(num-1).get_text()
         print(f"The content of page {num} is: \n")
-        print(page_content)
-        print("\n") 
+        all_text = []
+        page_content = pdf.load_page(num-1).get_text()
+        cleaned = ' '.join(page_content.split())
+        all_text.append(cleaned)
+        full_text = ' '.join(all_text)
+        print(full_text)
+        
+    
     except Exception as e:
         print(f"Error opening PDF file: {e}")
     except ValueError as e:
@@ -51,15 +56,18 @@ def get_page_summary(file_path):
 def get_pdf_content(file_path):
     try:
         pdf = fitz.open(file_path)
-        number_pages = pdf.page_count
-        pdf_content = []
-        for i in range(0, number_pages):
-            page_content = pdf.load_page(i).get_text()
-            page_content = page_content.replace("\n", "  ")
-            pdf_content.append(page_content)
-            print(pdf_content)
+        all_text = []
+        for i in range(0, pdf.page_count):
+            page_content = pdf.load_page(i).get_text("text")
+            cleaned = ' '.join(page_content.split()) 
+            all_text.append(cleaned)
+        full_text = ' '.join(all_text)
+        print(full_text)
+        return full_text
     except Exception as e:
         print(f"Error opening PDF file: {e}")
+        return None
+
 
 while True:
     number_input  = input("To extract metadata from a PDF file, choose 1 \nTo find total page numbers from a PDF file, choose 2 \nTo summarize an individual page from PDF, choose 3 \nTo summarize whole PDF, choose 4 \nTo exit the program, choose q \n")
