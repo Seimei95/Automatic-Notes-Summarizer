@@ -1,7 +1,11 @@
 import tkinter as tk
 import fitz
+import string, re
 #from sys import ps1
 from tkinter import filedialog
+import nltk
+import os
+from nltk import sent_tokenize, word_tokenize
 
 print("Welcome to Automatic Notes summarizer \n")
 print("This program will help you summarize your notes and make them more concise.\n")
@@ -9,7 +13,6 @@ print("Please select a PDF file to extract metadata from: \n")
 
 root = tk.Tk()
 root.withdraw()  
-
 file_path = filedialog.askopenfilename(
     title = "Select a file:"
     )
@@ -36,18 +39,27 @@ def get_page_summary(file_path):
     try:
         pdf = fitz.open(file_path)
         num = int(input("Enter the page number you want to summarize: "))
+        
         if num <1 or num > pdf.page_count:
             print(f"page number {num} is out of range. This PDF has only {pdf.page_count} pages.")
             return
         print(f"The content of page {num} is: \n")
-        all_text = []
         page_content = pdf.load_page(num-1).get_text()
-        cleaned = ' '.join(page_content.split())
-        all_text.append(cleaned)
-        full_text = ' '.join(all_text)
-        print(full_text)
+        page_content = page_content.lower()
+        page_content = re.sub(r"\d+"," ",page_content)
+        page_content = page_content.translate(str.maketrans(" "," ",string.punctuation))
+        page_content = re.sub(r"\s+"," ",page_content).strip()
+
+        NLTK_cache_path = os.path.join(os.path.dirname(__file__),"NLTK_cache")
+        if not os.path.exists(NLTK_cache_path):
+            os.makedirs(NLTK_cache_path)
+        nltk.data.path.append("NLTK_cache")
         
-    
+        text = page_content
+        sentences = sent_tokenize(text)
+        words = word_tokenize(text)
+        print(f"Sentences are {sentences}\n")
+        print(f"Words are {words}\n")
     except Exception as e:
         print(f"Error opening PDF file: {e}")
     except ValueError as e:
@@ -86,3 +98,4 @@ while True:
         print("Invalid input. Please select a valid option.")
 
     
+
