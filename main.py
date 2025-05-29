@@ -5,7 +5,9 @@ import string, re
 from tkinter import filedialog
 import nltk
 import os
-from nltk import sent_tokenize, word_tokenize
+from nltk import sent_tokenize
+from sklearn.feature_extraction.text import TfidfVectorizer
+import heapq
 
 print("Welcome to Automatic Notes summarizer \n")
 print("This program will help you summarize your notes and make them more concise.\n")
@@ -40,7 +42,7 @@ def get_page_summary(file_path):
         pdf = fitz.open(file_path)
         num = int(input("Enter the page number you want to summarize: "))
         
-        if num <1 or num > pdf.page_count:
+        if num < 1 or num > pdf.page_count:
             print(f"page number {num} is out of range. This PDF has only {pdf.page_count} pages.")
             return
         print(f"The content of page {num} is: \n")
@@ -57,9 +59,16 @@ def get_page_summary(file_path):
         
         text = page_content
         sentences = sent_tokenize(text)
-        words = word_tokenize(text)
-        print(f"Sentences are {sentences}\n")
-        print(f"Words are {words}\n")
+        vectorize = TfidfVectorizer()
+        matrix = vectorize.fit_transform(sentences)
+        num_sentences = 3
+        sentence_scores = matrix.sum(axis = 1)
+        scored_sentences = [(score.item(), idx ,sent) for idx, (score, sent) in enumerate(zip(sentence_scores, sentences))]
+        top_sentences = heapq.nlargest(num_sentences, scored_sentences, key=lambda x: x[0])
+        top_sentences_sorted = sorted(top_sentences, key=lambda x: x[1])
+        summary = " ".join([sent for _, _, sent in top_sentences_sorted])
+        print(f"{summary}\n")
+        return summary  
     except Exception as e:
         print(f"Error opening PDF file: {e}")
     except ValueError as e:
