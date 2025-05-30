@@ -41,7 +41,6 @@ def get_page_summary(file_path):
     try:
         pdf = fitz.open(file_path)
         num = int(input("Enter the page number you want to summarize: "))
-        
         if num < 1 or num > pdf.page_count:
             print(f"page number {num} is out of range. This PDF has only {pdf.page_count} pages.")
             return
@@ -51,12 +50,10 @@ def get_page_summary(file_path):
         page_content = re.sub(r"\d+"," ",page_content)
         page_content = page_content.translate(str.maketrans(" "," ",string.punctuation))
         page_content = re.sub(r"\s+"," ",page_content).strip()
-
         NLTK_cache_path = os.path.join(os.path.dirname(__file__),"NLTK_cache")
         if not os.path.exists(NLTK_cache_path):
             os.makedirs(NLTK_cache_path)
         nltk.data.path.append("NLTK_cache")
-        
         text = page_content
         sentences = sent_tokenize(text)
         vectorize = TfidfVectorizer()
@@ -79,16 +76,33 @@ def get_pdf_content(file_path):
         pdf = fitz.open(file_path)
         all_text = []
         for i in range(0, pdf.page_count):
-            page_content = pdf.load_page(i).get_text("text")
-            cleaned = ' '.join(page_content.split()) 
-            all_text.append(cleaned)
-        full_text = ' '.join(all_text)
-        print(full_text)
-        return full_text
+            page_content = pdf.load_page(i).get_text()
+            page_content = page_content.lower()
+            page_content = re.sub(r"\d+","",page_content)
+            page_content = page_content.translate(str.maketrans(" "," ",string.punctuation))
+            page_content = re.sub(r"\s+"," ",page_content).strip()
+            all_text.append(page_content)
+        final_text = "".join(all_text)
+        NLTK_cache_path = os.path.join(os.path.dirname(__file__),"NLTK_cache")
+        if not os.path.exists(NLTK_cache_path):
+            os.makedirs("NLTK_cache")
+        nltk.data.path.append("NLTK_cache")
+        sentences = sent_tokenize(final_text)
+        vectorize = TfidfVectorizer()
+        matrix = vectorize.fit_transform(sentences)
+        num_sentences = 10
+        sentence_scores = matrix.sum(axis = 1)
+        scored_sentences = [(score.item(), idx ,sent) for idx, (score, sent) in enumerate(zip(sentence_scores, sentences))]
+        top_sentences = heapq.nlargest(num_sentences, scored_sentences, key=lambda x: x[0])
+        top_sentences_sorted = sorted(top_sentences, key=lambda x: x[1])
+        summary = " ".join([sent for _, _, sent in top_sentences_sorted])
+        print(f"{summary}\n")
+        return summary
     except Exception as e:
         print(f"Error opening PDF file: {e}")
         return None
-
+    except ValueError as e:
+        print(f"Our experts suggest {e} isn't a valid PDF. Please try again.")
 
 while True:
     number_input  = input("To extract metadata from a PDF file, choose 1 \nTo find total page numbers from a PDF file, choose 2 \nTo summarize an individual page from PDF, choose 3 \nTo summarize whole PDF, choose 4 \nTo exit the program, choose q \n")
