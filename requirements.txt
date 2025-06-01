@@ -8,3 +8,6 @@ fastapi
 uvicorn
 transformers
 torch
+nltk
+scikit-learn
+pydantic

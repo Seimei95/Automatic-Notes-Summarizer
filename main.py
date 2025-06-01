@@ -7,7 +7,7 @@ import os
 from nltk import sent_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 import heapq
-from Summarizer_api.app import generate_summary
+from app import generate_summary
 
 print("Welcome to Automatic Notes summarizer \n")
 print("This program will help you summarize your notes and make them more concise.\n")
