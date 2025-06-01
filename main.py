@@ -1,13 +1,13 @@
 import tkinter as tk
 import fitz
 import string, re
-#from sys import ps1
 from tkinter import filedialog
 import nltk
 import os
 from nltk import sent_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 import heapq
+from Summarizer_api.app import generate_summary
 
 print("Welcome to Automatic Notes summarizer \n")
 print("This program will help you summarize your notes and make them more concise.\n")
@@ -104,6 +104,12 @@ def get_pdf_content(file_path):
     except ValueError as e:
         print(f"Our experts suggest {e} isn't a valid PDF. Please try again.")
 
+def summarize(text, mode="local"):
+    if mode == "online":
+        return generate_summary(text)
+    else:
+        return get_pdf_content(text)
+
 while True:
     number_input  = input("To extract metadata from a PDF file, choose 1 \nTo find total page numbers from a PDF file, choose 2 \nTo summarize an individual page from PDF, choose 3 \nTo summarize whole PDF, choose 4 \nTo exit the program, choose q \n")
     if number_input == "1":
@@ -113,7 +119,13 @@ while True:
     elif number_input == "3":
         get_page_summary(file_path)
     elif number_input == "4":
-        get_pdf_content(file_path)
+        choice = input(str(f"Please choose an option y/n" "\n" "Online Advanced summary - y or Simple Offline Summary - n"))
+        if choice == "y":
+            summarize(file_path, mode = "online")
+        elif choice == "n":
+            summarize(file_path)
+        else:
+            print("Invalid option, Please choose either y/n")
     elif number_input.lower() == "q":
         print("See you on the next PDF file!")
         break
