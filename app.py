@@ -7,7 +7,8 @@ app = FastAPI()
 class SummaryRequest(BaseModel):
     text: str
 
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6")
+
 
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
