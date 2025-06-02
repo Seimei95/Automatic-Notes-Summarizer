@@ -7,7 +7,7 @@ import os
 from nltk import sent_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 import heapq
-from app import generate_summary
+from app import summarize
 
 print("Welcome to Automatic Notes summarizer \n")
 print("This program will help you summarize your notes and make them more concise.\n")
@@ -106,7 +106,7 @@ def get_pdf_content(file_path):
 
 def summarize(text, mode="local"):
     if mode == "online":
-        return generate_summary(text)
+        return summarize(text)
     else:
         return get_pdf_content(text)
 
