@@ -9,9 +9,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import heapq
 from app import summarize
 
-print("Welcome to Automatic Notes summarizer \n")
-print("This program will help you summarize your notes and make them more concise.\n")
-print("Please select a PDF file to extract metadata from: \n")
+print("Hi, Im Mian - Your personal notes summarizer \n")
+print("Mian helps you to summarize your notes and make them more concise.\n")
+print("Please select a PDF file to extract data from: \n")
 
 root = tk.Tk()
 root.withdraw()  
@@ -111,7 +111,7 @@ def summarize(text, mode="local"):
         return get_pdf_content(text)
 
 while True:
-    number_input  = input("To extract metadata from a PDF file, choose 1 \nTo find total page numbers from a PDF file, choose 2 \nTo summarize an individual page from PDF, choose 3 \nTo summarize whole PDF, choose 4 \nTo exit the program, choose q \n")
+    number_input  = input("To extract data from a PDF file, choose 1 \nTo find total page numbers from a PDF file, choose 2 \nTo summarize an individual page from PDF, choose 3 \nTo summarize whole PDF, choose 4 \nTo exit the program, choose q \n")
     if number_input == "1":
         get_metadata(file_path)
     elif number_input == "2":
@@ -131,6 +131,3 @@ while True:
         break
     else:
         print("Invalid input. Please select a valid option.")
-
-    
-
