@@ -11,7 +11,7 @@
 # Installation and Setup
 ### 1. Clone the repository to local system:
 ```
-  git clone https://github.com/Seimei95/Automatic-Notes-Summarizer.git
+  git clone https://github.com/Seimei95/Mian-your-personal-notes-summarizer.git
   cd Automatic-Notes-Summarizer
 ```
 
