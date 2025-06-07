@@ -1,9 +1,9 @@
-# Automatic-Notes-Summarizer
-
+# Mian - Your Personal Notes Summarizer
+ 
 # Technology Stack
 
 - **Language:** Python 3.8+
-- **Libraries:** PyMuPDF, NLTK or spaCy, sumy
+- **Libraries:** PyMuPDF, NLTK, sumy
 - **Functionality:** Extract text, clean it, and generate extractive summaries
 - **Interface:** CLI (Command Line Interface)
 ---
