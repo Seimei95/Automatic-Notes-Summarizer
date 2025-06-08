@@ -1,13 +1,18 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from transformers import pipeline
+import os
+
+# Force offline mode
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
 
 app = FastAPI()
 
 class SummaryRequest(BaseModel):
     text: str
 
-summarizer = pipeline("summarization", model="t5-small")
+# Load BART summarization pipeline
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
@@ -19,4 +24,3 @@ def summarize(request: SummaryRequest):
         return {"summary": summary[0]["summary_text"]}
     except Exception as e:
         return {"error": "Summarization failed", "details": str(e)}
-
