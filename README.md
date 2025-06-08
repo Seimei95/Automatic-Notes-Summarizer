@@ -22,11 +22,8 @@
 
 # How to Use
 1. Place a PDF file inside the input/ folder.
-2. Run the summarizer file:
-  ```
-    python summarizer.py input/your_file.txt
-  ```
-3. Output will appear in the terminal or summary.txt /output.
+2. Select the preferable option
+3. Output will appear in the terminal 
 ---
 
 # Contributing
